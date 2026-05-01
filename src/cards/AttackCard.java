@@ -1,5 +1,7 @@
 package cards;
 
+import players.Player;
+
 public class AttackCard extends Card {
     private int damage;
 
@@ -9,7 +11,8 @@ public class AttackCard extends Card {
     }
 
     @Override
-    public void play() {
-        System.out.println(getName() + " ашиглаж " + damage + " хохирол учрууллаа!");
+    public void play(Player owner, Player opponent) {
+        System.out.println(owner.getName() + " -> " + getName() + " ашиглаж " + damage + " хохирол учрууллаа!");
+        opponent.takeDamage(this.damage);
     }
 }

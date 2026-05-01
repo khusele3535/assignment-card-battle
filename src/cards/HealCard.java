@@ -1,4 +1,5 @@
 package cards;
+import players.Player;
 
 public class HealCard extends Card {
     private int healAmount;
@@ -9,7 +10,8 @@ public class HealCard extends Card {
     }
 
     @Override
-    public void play() {
-        System.out.println(getName() + " ашиглаж " + healAmount + " HP нөхлөө!");
+    public void play(Player owner, Player opponent) {
+        System.out.println(owner.getName() + " " + getName() + " ашиглаж " + healAmount + " HP нөхлөө!");
+        owner.heal(this.healAmount);
     }
 }

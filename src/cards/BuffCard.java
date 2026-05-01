@@ -1,5 +1,7 @@
 package cards;
 
+import players.Player;
+
 public class BuffCard extends Card {
     private String effect;
 
@@ -9,7 +11,8 @@ public class BuffCard extends Card {
     }
 
     @Override
-    public void play() {
-        System.out.println(getName() + " ашиглаж " + effect + " эффект идэвхжүүллээ!");
+    public void play(Player owner, Player opponent) {
+        System.out.println(owner.getName() + " " + getName() + " ашиглаж " + effect + " эффект идэвхжүүллээ!");
+        // Одоогоор BuffCard зөвхөн текст хэвлэнэ, логикийг нь Week 3-т гүйцээнэ
     }
 }
