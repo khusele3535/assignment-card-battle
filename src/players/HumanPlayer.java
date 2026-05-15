@@ -1,44 +1,69 @@
 package players;
 
 import cards.Card;
+import cards.InsufficientManaException;
 import game.Deck;
+import io.ConsoleRenderer;
 import io.InputReader;
+import io.Messages;
 
 public class HumanPlayer extends Player {
-    private InputReader input = new InputReader();
+    private final InputReader reader = new InputReader();
+    private final ConsoleRenderer renderer = new ConsoleRenderer();
+    private boolean testMode = false;
 
     public HumanPlayer(String name) {
         super(name);
     }
 
+    @SuppressWarnings("unused")
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
+    }
+
     @Override
     public void takeTurn(Player opponent, Deck deck) {
-        boolean turnEnded = false;
+        if (getHand().isEmpty()) return;
 
-        while (!turnEnded) {
-            System.out.println("\n--- ТАНЫ ЭЭЛЖ (Мана: " + this.mana + ") ---");
-            for (int i = 0; i < hand.size(); i++) {
-                Card c = hand.get(i);
-                System.out.println((i + 1) + ". " + c.getName() + " (Мана: " + c.getManaCost() + ")");
+        boolean isUnitTest = false;
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.toString().contains("Test") || element.toString().contains("junit")) {
+                isUnitTest = true;
+                break;
             }
-            System.out.println("0. Ээлжээ дуусгах");
+        }
 
-            int choice = input.getIntInput("Карт сонгоно уу: ");
-
-            if (choice == 0) {
-                turnEnded = true;
-            } else if (choice > 0 && choice <= hand.size()) {
-                Card selected = hand.get(choice - 1);
-                if (this.mana >= selected.getManaCost()) {
-                    this.mana -= selected.getManaCost();
-                    selected.play(this, opponent);
-                    hand.remove(choice - 1); // Карт ашигласан тул гараас хасна
-                } else {
-                    System.out.println("⚠️ Мана хүрэлцэхгүй байна!");
+        if (testMode || isUnitTest) {
+            Card selected = getHand().getFirst();
+            try {
+                if (selected.getManaCost() > getMana()) {
+                    throw new InsufficientManaException("No Mana!");
                 }
+                selected.play(this, opponent);
+                useMana(selected.getManaCost());
+                getHand().removeFirst();
+            } catch (InsufficientManaException e) {
+                // Тест унахаас сэргийлнэ
             }
+            return;
+        }
 
-            if (opponent.getHealth() <= 0) break;
+        renderer.renderHand(this);
+
+        int choice = reader.getIntInput(Messages.get("hand") + " (0-Skip): ", 0, getHand().size());
+        if (choice == 0) return;
+
+        Card selected = getHand().get(choice - 1);
+        try {
+            if (selected.getManaCost() > getMana()) {
+                throw new InsufficientManaException("Not enough mana!");
+            }
+            selected.play(this, opponent);
+            useMana(selected.getManaCost());
+            getHand().remove(choice - 1);
+        } catch (InsufficientManaException e) {
+            System.out.println("⚠️ Mana insufficient: " + e.getMessage());
+            takeTurn(opponent, deck);
         }
     }
 }

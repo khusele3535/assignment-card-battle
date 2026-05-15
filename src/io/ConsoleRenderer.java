@@ -1,5 +1,6 @@
 package io;
 
+import players.HumanPlayer;
 import players.Player;
 
 public class ConsoleRenderer {
@@ -21,5 +22,8 @@ public class ConsoleRenderer {
         int filled = (int) ((double) current / max * barLength);
         if (filled < 0) filled = 0;
         return "[" + "#".repeat(filled) + "-".repeat(barLength - filled) + "]";
+    }
+
+    public void renderHand(HumanPlayer humanPlayer) {
     }
 }

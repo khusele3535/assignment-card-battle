@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class InputReader {
     private Scanner scanner = new Scanner(System.in);
 
-    public int getIntInput(String message) {
+    public int getIntInput(String message, int i, int size) {
         System.out.print(message);
         while (!scanner.hasNextInt()) {
             System.out.print("Буруу оролт! Тоо оруулна уу: ");

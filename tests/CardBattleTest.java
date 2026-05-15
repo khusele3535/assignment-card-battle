@@ -1,10 +1,4 @@
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 /**
  * Card Battle — Auto-grader тестүүд.
@@ -14,6 +8,13 @@ import java.lang.reflect.Modifier;
  *
  * Тоглоомын **бодит** ажиллагаа, UI/UX, creativity — гараар шалгагдана.
  */
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 @DisplayName("Card Battle Auto-Grader")
 public class CardBattleTest {
 

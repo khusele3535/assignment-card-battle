@@ -25,7 +25,7 @@ public class Game {
         System.out.println("  3. Гарах (Exit)");
         System.out.println("========================================");
 
-        int choice = input.getIntInput("Сонголтоо оруулна уу: ");
+        int choice = input.getIntInput("Сонголтоо оруулна уу: ", 0, getHand().size());
 
         switch (choice) {
             case 1:
